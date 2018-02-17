@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <title>General Mills</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background: #000000 url(loading.gif) center center no-repeat;
+        color: #ffffff;
+        font-family: sans-serif;
+        font-size: 13px;
+        line-height: 20px;
+        height: 100%;
+      }
+
+
+
+      #currentInfo {
+        width: 270px;
+        position: absolute;
+        left: 20px;
+        top: 63px;
+
+        background-color: rgba(0,0,0,0.2);
+
+        border-top: 1px solid rgba(255,255,255,0.4);
+        padding: 10px;
+      }
+
+
+
+      .bull {
+        padding: 0 5px;
+        color: #555;
+      }
+
+      #title {
+        position: absolute;
+        top: 20px;
+        width: 270px;
+        left: 20px;
+        background-color: rgba(0,0,0,0.2);
+        border-radius: 3px;
+        font: 20px Georgia;
+        padding: 10px;
+      }
+
+
+
+      #ce span {
+        display: none;
+      }
+
+      #ce {
+        width: 107px;
+        height: 55px;
+        display: block;
+        position: absolute;
+        bottom: 15px;
+        left: 20px;
+        background: url(ce.png);
+      }
+
+
+    </style>
+  </head>
+  <body>
+
+  <div id="container"></div>
+
+
+
+  <div id="title">
+    GeneralMills Customer Twitter distribution
+  </div>
+
+
+
+  <script src="js/Detector.js"></script>
+  <script src="js/three.min.js"></script>
+  <script src="js/Tween.js"></script>
+  <script src="js/globe.js"></script>
+  <script >
+
+    if(!Detector.webgl){
+      Detector.addGetWebGLMessage();
+    } else {
+
+
+      var container = document.getElementById('container');
+      var globe = new DAT.Globe(document.getElementById('container'), function(label){
+        return new THREE.Color([
+          0xd9d9d9, 0xb6b4b5, 0x9966cc, 0x15adff, 0x3e66a3,
+          0x216288, 0xff7e7e, 0xff1f13, 0xc0120b, 0x5a1301, 0xffcc02,
+          0xedb113, 0x9fce66, 0x0c9a39,
+          0xfe9872, 0x7f3f98, 0xf26522, 0x2bb673, 0xd7df23,
+          0xe6b23a, 0x7ed3f7][label]);
+      });
+
+      var xhr;
+
+      xhr = new XMLHttpRequest();
+      xhr.open('GET', 'StrGM.json', true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var data = JSON.parse(xhr.responseText);
+            window.data = data;
+
+            globe.addData(data[1], {format: 'magnitude', animated: true});
+
+            globe.createPoints();
+            //settime(globe,0)();
+            globe.animate();
+            //globe.rotation.x += 0.05
+            //globe.rotation.y += 0.05
+            document.body.style.backgroundImage = 'none'; // remove loading
+          }
+        }
+      };
+      xhr.send(null);
+    }
+    var audio = new Audio("Arctic Monkeys - Love is a Laserquest  lyrics.mp3");
+    audio.play();
+
+  </script>
+
+  </body>
+
+</html>
